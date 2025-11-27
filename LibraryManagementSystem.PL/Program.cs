@@ -1,3 +1,5 @@
+using LibraryManagementSystem.BLL.IServices;
+using LibraryManagementSystem.BLL.Services;
 using LibraryManagementSystem.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +11,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<LibraryDbContext>(opt =>
     opt.UseInMemoryDatabase("LibraryDb"));
 
-
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBorrowTransactionService, BorrowTransactionService>();
 
 var app = builder.Build();
 
