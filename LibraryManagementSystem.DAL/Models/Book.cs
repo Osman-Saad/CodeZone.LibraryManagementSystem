@@ -17,5 +17,6 @@ namespace LibraryManagementSystem.DAL.Models
         public Guid AuthorId { get; set; }
         public Author Author { get; set; }
         public bool IsBorrowed { get; set; } = false;
+        public ICollection<BorrowTransaction> Transactions { get; set; } = new List<BorrowTransaction>();
     }
 }

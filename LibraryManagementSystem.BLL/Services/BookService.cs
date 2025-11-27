@@ -1,0 +1,41 @@
+﻿using LibraryManagementSystem.BLL.IServices;
+using LibraryManagementSystem.DAL.Data;
+using LibraryManagementSystem.DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LibraryManagementSystem.BLL.Services
+{
+    public class BookService : IBookService
+    {
+        private readonly LibraryDbContext _dbContext;
+
+        public BookService(LibraryDbContext dbContext)
+        {
+            this._dbContext = dbContext;
+        }
+        public async Task AddAsync(Book book)=>
+            await _dbContext.Books.AddAsync(book);
+
+        public async Task<int> CompleteAsync()=>
+            await _dbContext.SaveChangesAsync();
+
+        public void DeleteAsync(Book book)=>
+            _dbContext.Books.Remove(book);
+
+        public async Task<IEnumerable<Book>> GetAllAsync()=>
+           await _dbContext.Books
+            .Include(b=>b.Author)
+            .ToListAsync();
+
+        public async Task<Book?> GetByIdAsync(Guid id)=>
+            await _dbContext.Books.FindAsync(id);
+
+        public void UpdateAsync(Book book) =>
+              _dbContext.Books.Update(book);
+    }
+}
