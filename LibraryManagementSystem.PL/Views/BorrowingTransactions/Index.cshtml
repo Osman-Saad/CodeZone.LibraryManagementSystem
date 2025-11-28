@@ -1,0 +1,109 @@
+﻿@model IEnumerable<BookViewModel>
+
+@{
+    var errorMessage = TempData["ErrorMessage"] as string;
+    if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="toast align-items-center bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body text-white">
+                    @errorMessage
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    }
+}
+<h4 class="text-center">Library</h4>
+<br />
+<a class="btn btn-primary" asp-action="Borrow" asp-controller="BorrowingTransactions">Borrow Book</a>
+<form method="get" asp-action="Search" asp-controller="BorrowingTransactions">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="col-form-label">Status</label>
+                <select class="form-select" name="status">
+                    <option value="@null">----Select Status</option>
+                    <option value="borrowed">Borrowed</option>
+                    <option value="available">Available</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Borrow Date</label>
+                <input type="date" name="borrowDate" class="form-control" placeholder="borrow date" />
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Return Date</label>
+                <input type="date" name="returnDate" class="form-control" placeholder="return date" />
+            </div>
+            <div class="col d-flex align-items-end">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+@if (Model.Count() > 0)
+{
+    <div class="d-flex justify-content-center mt-5">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" scope="col">Title</th>
+                    <th class="text-center" scope="col">Description</th>
+                    <th class="text-center" scope="col">Author</th>
+                    <th class="text-center" scope="col">Genre</th>
+                    <th class="text-center" scope="col">Status</th>
+                    <th class="text-center" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in Model)
+                {
+                    <tr>
+                        <td>@book.Title</td>
+                        <td>@book.Description</td>
+                        <td>@book.Author?.FullName</td>
+                        <td>@book.Genre</td>
+                        <td class="@(book.IsBorrowed ? "text-danger" : "text-success")">@(book.IsBorrowed ? "Borrowed" : "Available")</td>
+                        @{
+                            
+                            if (book.IsBorrowed)
+                            {
+                                <td class="align-middle">
+                                    <form asp-action="Return" method="post" class="d-inline">
+                                        <input type="hidden" name="bookId" value="@book.Id" />
+                                        <input type="submit" class="btn btn-primary" value="Return"/>
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="align-middle">
+                                    <form asp-action="Borrow" method="post" class="d-inline">
+                                        <input type="hidden" name="bookId" value="@book.Id" />
+                                        <input type="submit" class="btn btn-primary" value="Borrow"/>
+                                    </form>
+                                </td>
+                            }
+
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-primary mt-2" role="alert">
+        No Books is Recorded
+    </div>
+}
+@section Scripts {
+    <script>
+             document.addEventListener('DOMContentLoaded', function(){
+            var toastEl = document.querySelector('.toast');
+            if(toastEl) new bootstrap.Toast(toastEl).show();
+        });
+    </script>
+}

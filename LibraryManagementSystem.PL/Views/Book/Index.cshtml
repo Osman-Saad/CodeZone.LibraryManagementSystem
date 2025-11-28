@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BookViewModel>
+@{
+    var currentPage = (int)ViewBag.CurrentPage;
+    var pageCount = (int)ViewBag.PageCount;
+}
+<h4 class="text-center">All Books</h4>
+
+<a asp-action="Create" class="btn btn-primary">Create New Book</a>
+@if (Model.Count() > 0)
+{
+    <div class="d-flex justify-content-center mt-5">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" scope="col">Title</th>
+                    <th class="text-center" scope="col">Description</th>
+                    <th class="text-center" scope="col">Author</th>
+                    <th class="text-center" scope="col">Genre</th>
+                    <th class="text-center" scope="col">Edit</th>
+                    <th class="text-center" scope="col">Details</th>
+                    <th class="text-center" scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var book in Model)
+                {
+                    <tr>
+                        <td>@book.Title</td>
+                        <td>@book.Description</td>
+                        <td>@book.Author.FullName</td>
+                        <td>@book.Genre</td>
+                        <td class="align-middle text-center">
+                            <a asp-action="Edit" class="btn btn-warning" asp-route-id="@book.Id">Edit</a>
+                        </td>
+                        <td class="align-middle text-center">
+                            <a asp-action="Details" class="btn btn-primary" asp-route-id="@book.Id">Details</a>
+                        </td>
+                        <td class="align-middle text-center">
+                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@book.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="Page navigation example" class="d-flex justify-content-end">
+        <ul class="pagination">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = currentPage - 1 })">Previous</a>
+            </li>
+            @for (int i = 1; i <= pageCount; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a></li>
+            }
+            <li class="page-item @(currentPage == pageCount ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = currentPage + 1 })">Next</a>
+            </li>
+        </ul>
+    </nav>
+}
+else
+{
+    <div class="alert alert-primary mt-2" role="alert">
+        No Books is Recorded
+    </div>
+}
+

@@ -1,0 +1,22 @@
+﻿@model AuthorViewModel
+
+<div class="form-group">
+    <label class="col-form-label"> Full Name</label>
+    <input readonly class="form-control" type="text" asp-for="FullName" />
+    <span asp-validation-for="FullName" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label class="col-form-label"> Email</label>
+    <input readonly class="form-control" type="text" asp-for="Email" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label class="col-form-label"> Website</label>
+    <input readonly class="form-control" type="text" asp-for="Website" />
+    <span asp-validation-for="Website" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label class="col-form-label"> Bio</label>
+    <input readonly class="form-control" type="text" asp-for="Bio" />
+    <span asp-validation-for="Bio" class="text-danger"></span>
+</div>

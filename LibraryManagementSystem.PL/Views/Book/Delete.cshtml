@@ -1,0 +1,13 @@
+﻿@model BookViewModel
+@{
+    ViewData["Title"] = "Delete Book";
+}
+<h4>Delete Book @Model.Title </h4>
+<br />
+<div>
+ <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <partial name="PartialView/_DetailsDeletePartialView" model="@Model" />
+        <input type="submit" class="btn btn-danger mt-4" value="Delete" asp-route-id="@Model.Id" />
+ </form>
+</div>

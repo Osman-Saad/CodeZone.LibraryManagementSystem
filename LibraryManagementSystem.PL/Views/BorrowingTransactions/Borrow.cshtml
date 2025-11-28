@@ -1,0 +1,44 @@
+﻿@using LibraryManagementSystem.BLL.ProjectionModel
+
+@{
+    var books = ViewBag.Books as IEnumerable<BookSelectItem>;
+
+    var booksItems = new SelectList(books, "Id", "Title");
+}
+
+<div class="container">
+    <form asp-action="Borrow" asp-controller="BorrowingTransactions" method="post">
+        <label class="col-form-label">Book</label>
+        <select name="bookId" id="bookSelect" class="form-select" asp-items="booksItems">
+            <option value="@null">---Select Book---</option>
+        </select>
+        <div id="bookAlert" class="alert alert-danger d-none mt-2" role="alert">
+        </div>
+        <input id="borrowBtn" class="d-none btn btn-primary mt-2" value="Borrow" type="submit" />
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+    
+        $(document).ready(function () {
+            $("#bookSelect").on("change", function() {
+            var bookId = $(this).val();
+            if(!bookId) {
+                $("#bookAlert").addClass("d-none");
+                $("#borrowBtn").addClass("d-none");
+                return;
+            }
+            $.get("/Book/GetBookStatus/" + bookId, function(data) {
+                if(data.isBorrowed){
+                    $("#bookAlert").removeClass("d-none alert-success").addClass("alert-danger").text("This book is already Checked Out!");
+                    $("#borrowBtn").addClass("d-none");
+                } else {
+                    $("#bookAlert").removeClass("d-none alert-danger").addClass("alert-success").text("This book is Available.");
+                    $("#borrowBtn").removeClass("d-none");
+                }
+            });
+        });
+        });
+    </script>
+}

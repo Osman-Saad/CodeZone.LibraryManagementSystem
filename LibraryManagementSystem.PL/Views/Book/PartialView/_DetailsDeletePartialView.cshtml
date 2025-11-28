@@ -1,0 +1,17 @@
+﻿@model BookViewModel
+<div class="form-group">
+    <label class="col-form-label"> Title</label>
+    <input readonly class="form-control" type="text" asp-for="Title" />
+</div>
+<div class="form-group">
+    <label class="col-form-label"> Description</label>
+    <input readonly class="form-control" type="text" asp-for="Description" />
+</div>
+<div class="form-group">
+    <label class="col-form-label"> Author</label>
+    <input readonly class="form-control" type="text" asp-for="Author.FullName" />
+</div>
+<div class="form-group">
+    <label class="col-form-label"> Genre</label>
+    <input readonly class="form-control" type="text" asp-for="Genre" />
+</div>
