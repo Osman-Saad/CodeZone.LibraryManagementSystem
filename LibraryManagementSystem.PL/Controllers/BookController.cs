@@ -22,10 +22,14 @@ namespace LibraryManagementSystem.PL.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
-            var books = await _bookService.GetAllAsync();
+            var bookCount = await _bookService.GetBookCount();
+            var pageCount = (int)Math.Ceiling(bookCount / 5.0);
+            var books = await _bookService.GetAllAsync(pageNumber);
             var booksVm = _mapper.Map<IEnumerable<BookViewModel>>(books);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageCount = pageCount;
             return View(booksVm);
         }
 

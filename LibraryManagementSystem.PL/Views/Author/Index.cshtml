@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<AuthorViewModel>
 @{
+    var currentPage = (int)ViewBag.CurrentPage;
+    var pageCount = (int)ViewBag.PageCount;
 }
 <h4 class="text-center">All Authors</h4>
-<br />
-<br />
+
 <a asp-action="Create" class="btn btn-info">Create New Author</a>
 @if (Model.Count() > 0)
 {
@@ -44,6 +45,20 @@
             </tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example" class="d-flex justify-content-end">
+        <ul class="pagination">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = currentPage - 1 })">Previous</a>
+            </li>
+            @for(int i = 1; i <= pageCount; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { pageNumber = i})">@i</a></li>
+            }
+            <li class="page-item @(currentPage == pageCount ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = currentPage + 1 })">Next</a>
+            </li>
+        </ul>
+    </nav>
 }
 else
 {

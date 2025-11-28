@@ -17,10 +17,14 @@ namespace LibraryManagementSystem.PL.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber =1)
         {
-            var authors = await _authorService.GetAllAsync();
+            var authorCount = await _authorService.GetAuthorCount();
+            var pageCount = (int)Math.Ceiling(authorCount / 5.0);
+            var authors = await _authorService.GetAllAsync(pageNumber);
             var authorsVm = _mapper.Map<IEnumerable<AuthorViewModel>>(authors);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageCount = pageCount;
             return View(authorsVm);
         }
 

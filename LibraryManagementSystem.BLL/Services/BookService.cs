@@ -28,11 +28,24 @@ namespace LibraryManagementSystem.BLL.Services
         public void DeleteAsync(Book book)=>
             _dbContext.Books.Remove(book);
 
-        public async Task<IEnumerable<Book>> GetAllAsync()=>
+        public async Task<IEnumerable<Book>> GetAllAsync(int pageNumber)=>
            await _dbContext.Books
             .AsNoTracking()
+            .Skip((pageNumber-1)*5)
+            .Take(5)
             .Include(b=>b.Author)
             .ToListAsync();
+
+        public async Task<IEnumerable<Book>> GetAllAsync()=>
+             await _dbContext.Books
+            .AsNoTracking()
+            .Include(b => b.Author)
+            .ToListAsync();
+
+
+        public async Task<int> GetBookCount()=>
+           await _dbContext.Books.CountAsync();
+
 
         public async Task<Book?> GetByIdAsync(Guid id)=>
             await _dbContext.Books.Include(b=>b.Author).FirstOrDefaultAsync(b=>b.Id==id);

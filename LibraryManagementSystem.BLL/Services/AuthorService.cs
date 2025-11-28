@@ -25,9 +25,11 @@ namespace LibraryManagementSystem.BLL.Services
            await _dbContext.Authors.AddAsync(author);
 
        
-        public async Task<IEnumerable<Author>> GetAllAsync()=>
+        public async Task<IEnumerable<Author>> GetAllAsync(int pageNumber)=>
             await _dbContext.Authors
             .AsNoTracking()
+            .Skip((pageNumber - 1)*5)
+            .Take(5)
             .Include(a=>a.Books)
             .ToListAsync();
 
@@ -59,6 +61,8 @@ namespace LibraryManagementSystem.BLL.Services
                 Id = a.Id,
                 FullName = a.FullName
             }).ToListAsync();
-        
+
+        public async Task<int> GetAuthorCount() =>
+           await _dbContext.Authors.CountAsync();
     }
 }
