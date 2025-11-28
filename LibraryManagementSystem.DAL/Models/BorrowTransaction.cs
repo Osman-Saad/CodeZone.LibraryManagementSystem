@@ -11,7 +11,7 @@ namespace LibraryManagementSystem.DAL.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public Guid BookId { get; set; }
         public Book Book { get; set; } 
-        public DateTime BorrowedDate { get; set; }
-        public DateTime? ReturnedDate { get; set; }
+        public DateOnly BorrowedDate { get; set; }
+        public DateOnly? ReturnedDate { get; set; }
     }
 }

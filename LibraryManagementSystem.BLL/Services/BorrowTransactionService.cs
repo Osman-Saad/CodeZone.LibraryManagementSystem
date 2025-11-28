@@ -23,10 +23,11 @@ namespace LibraryManagementSystem.BLL.Services
         public async Task BorrowAsync(Guid bookId)
         {
             var book = await _bookService.GetByIdAsync(bookId)??throw new Exception("Book Not Found");
+            if(book.IsBorrowed) throw new Exception("Book is already borrowed.");
             var transaction = new BorrowTransaction
             {
                 BookId = bookId,
-                BorrowedDate = DateTime.UtcNow,
+                BorrowedDate = DateOnly.FromDateTime(DateTime.UtcNow),
             };
             await _dbContext.BorrowTransactions.AddAsync(transaction);
             book.IsBorrowed = true;
@@ -41,7 +42,7 @@ namespace LibraryManagementSystem.BLL.Services
       
         public async Task<IEnumerable<Book>> ListTransactionsAsync(string? status, DateOnly? borrowDate, DateOnly? returnDate)
         {
-            IQueryable<Book> query = _dbContext.Books;
+            IQueryable<Book> query = _dbContext.Books.Include(a=>a.Author);
 
             if (status == "borrowed")
                 query = query.Where(b => b.IsBorrowed);
@@ -51,14 +52,9 @@ namespace LibraryManagementSystem.BLL.Services
             if (borrowDate.HasValue || returnDate.HasValue)
             {
                 query = query.Where(b => b.Transactions.Any(t =>
-                    (borrowDate.HasValue &&
-                     t.BorrowedDate >= borrowDate.Value.ToDateTime(TimeOnly.MinValue) &&
-                     t.BorrowedDate <= borrowDate.Value.ToDateTime(TimeOnly.MaxValue))
+                    (borrowDate.HasValue && t.BorrowedDate == borrowDate.Value)
                     ||
-                    (returnDate.HasValue &&
-                     t.ReturnedDate.HasValue &&
-                     t.ReturnedDate.Value >= returnDate.Value.ToDateTime(TimeOnly.MinValue) &&
-                     t.ReturnedDate.Value <= returnDate.Value.ToDateTime(TimeOnly.MaxValue))
+                    (returnDate.HasValue && t.ReturnedDate== returnDate.Value)
                 ));
             }
 
@@ -70,7 +66,7 @@ namespace LibraryManagementSystem.BLL.Services
             var transaction = await _dbContext.BorrowTransactions
                 .Where(t => t.BookId == bookId && t.ReturnedDate == null)
                 .FirstOrDefaultAsync() ?? throw new Exception("No active borrow transaction found for this book.");
-            transaction.ReturnedDate = DateTime.UtcNow;
+            transaction.ReturnedDate = DateOnly.FromDateTime(DateTime.UtcNow);
             var book = await _bookService.GetByIdAsync(bookId) ?? throw new Exception("Book Not Found");
             book.IsBorrowed = false;
             _bookService.UpdateAsync(book);

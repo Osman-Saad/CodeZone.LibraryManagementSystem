@@ -1,4 +1,5 @@
 ﻿using LibraryManagementSystem.BLL.IServices;
+using LibraryManagementSystem.BLL.ProjectionModel;
 using LibraryManagementSystem.DAL.Data;
 using LibraryManagementSystem.DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -29,11 +30,24 @@ namespace LibraryManagementSystem.BLL.Services
 
         public async Task<IEnumerable<Book>> GetAllAsync()=>
            await _dbContext.Books
+            .AsNoTracking()
             .Include(b=>b.Author)
             .ToListAsync();
 
         public async Task<Book?> GetByIdAsync(Guid id)=>
-            await _dbContext.Books.FindAsync(id);
+            await _dbContext.Books.Include(b=>b.Author).FirstOrDefaultAsync(b=>b.Id==id);
+
+        public async Task<IEnumerable<BookSelectItem>> GetForSelectAsync() =>
+            await _dbContext.Books
+            .AsNoTracking()
+            .OrderBy(b => b.Title)
+            .Select(b => new BookSelectItem
+            {
+                Id = b.Id,
+                Title = b.Title,
+                IsBorrowed = b.IsBorrowed
+            }).ToListAsync();
+
 
         public void UpdateAsync(Book book) =>
               _dbContext.Books.Update(book);

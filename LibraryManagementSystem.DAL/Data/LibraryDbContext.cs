@@ -11,7 +11,7 @@ namespace LibraryManagementSystem.DAL.Data
 {
     public class LibraryDbContext: DbContext
     {
-        LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
+        public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

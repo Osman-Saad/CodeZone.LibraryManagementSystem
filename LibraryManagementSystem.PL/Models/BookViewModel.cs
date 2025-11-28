@@ -12,14 +12,14 @@ namespace LibraryManagementSystem.PL.Models
         public string Title { get; set; }
 
         [Required]
-        public Genre Genre { get; set; }
+        public string Genre { get; set; }
 
         [MaxLength(300)]
         public string? Description { get; set; }
 
         [Required]
         public Guid AuthorId { get; set; }
-        public Author Author { get; set; }
+        public Author? Author { get; set; }
         public bool IsBorrowed { get; set; } = false;
     }
 }

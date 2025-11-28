@@ -1,0 +1,15 @@
+﻿@model AuthorViewModel
+@{
+    ViewData["Title"] = "Edit Author";
+    
+}
+<form method="post" >
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="Id" />
+    <partial name="PartialView/_CreateEditPartialView" model="@Model" />
+    <input type="submit" class="btn btn-warning mt-2" asp-route-id ="@Model.Id" value="Edit" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

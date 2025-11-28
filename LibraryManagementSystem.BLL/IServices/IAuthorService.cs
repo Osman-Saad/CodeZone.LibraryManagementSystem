@@ -1,4 +1,5 @@
-﻿using LibraryManagementSystem.DAL.Models;
+﻿using LibraryManagementSystem.BLL.ProjectionModel;
+using LibraryManagementSystem.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace LibraryManagementSystem.BLL.IServices
         Task<IEnumerable<Author>> GetAllAsync();
         void UpdateAsync(Author author);
         void DeleteAsync(Author author);
+        Task<IEnumerable<AuthorSelectItem>> GetForSelectAsync();
+        Task<bool> EmailIsExist(Guid? id, string email);
+        Task<bool> FullNameIsExist(Guid? id, string fullName);
         Task<int> CompleteAsync();
 
     }

@@ -1,0 +1,24 @@
+﻿@model BookViewModel
+@{
+    ViewData["Title"] = "Create Book";
+}
+
+<form method="post">
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <partial name="PartialView/_CreateEditPartialView" model="@Model" />
+    <label class="col-form-label ">Author</label>
+    <select asp-items="ViewBag.Authors" asp-for="AuthorId" class="form-select">
+        <option value="">-- select author --</option>
+    </select>
+    <span asp-validation-for="AuthorId" class="text-danger d-block"></span>
+    <label class="col-form-label">Genre</label>
+    <select asp-items="ViewBag.Genre" asp-for="Genre" class="form-select">
+        <option value="">-- select Genre --</option>
+    </select>
+    <span asp-validation-for="Genre" class="text-danger d-block"></span>
+    <input type="submit" class="btn btn-info mt-2" value="Save" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

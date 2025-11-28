@@ -1,6 +1,7 @@
 using LibraryManagementSystem.BLL.IServices;
 using LibraryManagementSystem.BLL.Services;
 using LibraryManagementSystem.DAL.Data;
+using LibraryManagementSystem.DAL.Data.Seed;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,18 @@ builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IBorrowTransactionService, BorrowTransactionService>();
 
 var app = builder.Build();
+var scope = app.Services.CreateScope();
+var serviceProvider = scope.ServiceProvider;
+var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+try
+{
+    var dbContext = serviceProvider.GetRequiredService<LibraryDbContext>();
+    await SeedContext.SeedAsync(dbContext);
+}
+catch(Exception ex)
+{
+    logger.LogError(ex.Message, ex);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -36,5 +49,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();

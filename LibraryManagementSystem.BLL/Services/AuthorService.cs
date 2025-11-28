@@ -1,4 +1,5 @@
 ﻿using LibraryManagementSystem.BLL.IServices;
+using LibraryManagementSystem.BLL.ProjectionModel;
 using LibraryManagementSystem.DAL.Data;
 using LibraryManagementSystem.DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace LibraryManagementSystem.BLL.Services
        
         public async Task<IEnumerable<Author>> GetAllAsync()=>
             await _dbContext.Authors
+            .AsNoTracking()
             .Include(a=>a.Books)
             .ToListAsync();
 
@@ -41,5 +43,22 @@ namespace LibraryManagementSystem.BLL.Services
 
         public async Task<int> CompleteAsync()=>
             await _dbContext.SaveChangesAsync();
+
+        public async Task<bool> EmailIsExist(Guid? id ,string email)=>
+            await _dbContext.Authors.AnyAsync(a => a.Email == email && a.Id != id);
+
+        public async Task<bool> FullNameIsExist(Guid? id, string fullName)=>
+           await _dbContext.Authors.AnyAsync(a => a.FullName == fullName && a.Id!=id);
+
+        public async Task<IEnumerable<AuthorSelectItem>> GetForSelectAsync() =>
+            await _dbContext.Authors
+            .AsNoTracking()
+            .OrderBy(a => a.FullName)
+            .Select(a => new AuthorSelectItem
+            {
+                Id = a.Id,
+                FullName = a.FullName
+            }).ToListAsync();
+        
     }
 }
