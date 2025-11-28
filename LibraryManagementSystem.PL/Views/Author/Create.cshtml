@@ -2,11 +2,12 @@
 @{
     ViewData["Title"] = "Create Author";
 }
-
+<h4>Create Author</h4>
+<br />
 <form method="post">
     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
     <partial name="PartialView/_CreateEditPartialView" model="@Model" />
-    <input type="submit" class="btn btn-info mt-2" value="Save" />
+    <input type="submit" class="btn btn-primary mt-2" value="Save" />
 </form>
 
 @section Scripts {

@@ -5,7 +5,6 @@ using LibraryManagementSystem.DAL.Models;
 using LibraryManagementSystem.PL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.PL.Controllers
 {
@@ -108,7 +107,7 @@ namespace LibraryManagementSystem.PL.Controllers
                 return BadRequest();
             var book = await _bookService.GetByIdAsync(id.Value);
             if (book == null)
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             var bookVm = _mapper.Map<BookViewModel>(book);
             return View(bookVm);
 
@@ -116,7 +115,7 @@ namespace LibraryManagementSystem.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id,BookViewModel bookVm)
+        public async Task<IActionResult> Delete(Guid id, BookViewModel bookVm)
         {
             if (id != bookVm.Id)
                 return BadRequest();
@@ -129,6 +128,14 @@ namespace LibraryManagementSystem.PL.Controllers
                 return RedirectToAction(nameof(Index));
             ModelState.AddModelError(string.Empty, "Something went wrong.");
             return View(bookVm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBookStatus(Guid id)
+        {
+            var book = await _bookService.GetByIdAsync(id);
+            if (book == null) return NotFound();
+            return Json(new { book.IsBorrowed });
         }
     }
 }

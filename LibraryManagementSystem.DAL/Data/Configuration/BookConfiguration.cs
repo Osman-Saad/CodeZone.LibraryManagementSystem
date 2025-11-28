@@ -1,11 +1,6 @@
 ﻿using LibraryManagementSystem.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.DAL.Data.Configuration
 {
@@ -13,7 +8,7 @@ namespace LibraryManagementSystem.DAL.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {
-            builder.Property(b=>b.Title)
+            builder.Property(b => b.Title)
                    .IsRequired();
 
             builder.Property(b => b.Genre)
@@ -22,7 +17,7 @@ namespace LibraryManagementSystem.DAL.Data.Configuration
 
             builder.Property(b => b.Description)
                    .HasMaxLength(300);
- 
+
             builder.HasOne(b => b.Author)
                    .WithMany(a => a.Books)
                    .HasForeignKey(b => b.AuthorId)

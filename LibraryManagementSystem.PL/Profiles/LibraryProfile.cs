@@ -13,11 +13,11 @@ namespace LibraryManagementSystem.PL.Profiles
                 .ForMember(d => d.Id, o => o.Ignore());
             CreateMap<Author, AuthorViewModel>();
 
-            CreateMap<BookViewModel,Book>()
-                .ForMember(d=>d.Id,o=>o.Ignore())
-                .ForMember(d=>d.Genre,o=>o.MapFrom(s=>Enum.Parse<Genre>(s.Genre)));
+            CreateMap<BookViewModel, Book>()
+                .ForMember(d => d.Id, o => o.Ignore())
+                .ForMember(d => d.Genre, o => o.MapFrom(s => Enum.Parse<Genre>(s.Genre)));
             CreateMap<Book, BookViewModel>()
-                .ForMember(d=>d.Genre,o=>o.MapFrom(s=>s.Genre.ToString()));
+                .ForMember(d => d.Genre, o => o.MapFrom(s => s.Genre.ToString()));
         }
     }
 }

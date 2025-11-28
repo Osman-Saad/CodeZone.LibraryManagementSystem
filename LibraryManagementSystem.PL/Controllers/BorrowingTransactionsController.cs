@@ -2,8 +2,6 @@
 using LibraryManagementSystem.BLL.IServices;
 using LibraryManagementSystem.PL.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.PL.Controllers
 {

@@ -17,7 +17,7 @@ namespace LibraryManagementSystem.PL.Controllers
             this._mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber =1)
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
             var authorCount = await _authorService.GetAuthorCount();
             var pageCount = (int)Math.Ceiling(authorCount / 5.0);
@@ -49,12 +49,12 @@ namespace LibraryManagementSystem.PL.Controllers
         {
             if (!ModelState.IsValid)
                 return View(authorVm);
-            if (await _authorService.FullNameIsExist(null,authorVm.FullName))
+            if (await _authorService.FullNameIsExist(null, authorVm.FullName))
             {
                 ModelState.AddModelError(nameof(authorVm.FullName), "Full name is already exist.");
                 return View(authorVm);
             }
-            if (await _authorService.EmailIsExist(null,authorVm.Email))
+            if (await _authorService.EmailIsExist(null, authorVm.Email))
             {
                 ModelState.AddModelError(nameof(authorVm.Email), "Email is already exist.");
                 return View(authorVm);
@@ -88,12 +88,12 @@ namespace LibraryManagementSystem.PL.Controllers
                 return BadRequest();
             if (!ModelState.IsValid)
                 return View(authorVm);
-            if (await _authorService.FullNameIsExist(id,authorVm.FullName))
+            if (await _authorService.FullNameIsExist(id, authorVm.FullName))
             {
                 ModelState.AddModelError(nameof(authorVm.FullName), "Full name is already exist.");
                 return View(authorVm);
             }
-            if (await _authorService.EmailIsExist(id,authorVm.Email))
+            if (await _authorService.EmailIsExist(id, authorVm.Email))
             {
                 ModelState.AddModelError(nameof(authorVm.Email), "Email is already exist.");
                 return View(authorVm);
@@ -120,15 +120,15 @@ namespace LibraryManagementSystem.PL.Controllers
                 return BadRequest();
             var author = await _authorService.GetByIdAsync(id.Value);
             if (author == null)
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             var authorVm = _mapper.Map<AuthorViewModel>(author);
             return View(authorVm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id,Author authorVm)
+        public async Task<IActionResult> Delete(Guid id, Author authorVm)
         {
-            if(id != authorVm.Id)
+            if (id != authorVm.Id)
                 return BadRequest();
             var author = await _authorService.GetByIdAsync(id);
             if (author == null)

@@ -1,8 +1,8 @@
 ﻿@using LibraryManagementSystem.BLL.ProjectionModel
-@using System.Text.Json
+
 @{
     var books = ViewBag.Books as IEnumerable<BookSelectItem>;
-    var booksJson = JsonSerializer.Serialize(books);
+
     var booksItems = new SelectList(books, "Id", "Title");
 }
 
@@ -18,41 +18,27 @@
     </form>
 </div>
 
-@section Scripts{
+@section Scripts {
     <script>
-        const books = @Html.Raw(booksJson)
+    
         $(document).ready(function () {
-               $("#bookSelect").on("change", function () {
-                   var selectedValue = $(this).val();
-                   var selectedBook = books.find(b => b.Id === selectedValue);
-                   if(selectedBook){
-                       if(selectedBook.IsBorrowed){
-                           $("#bookAlert")
-                            .removeClass("d-none alert-success")
-                            .addClass("alert-danger")
-                            .text("This book is already Checked Out!");
-                             
-                            $("#borrowBtn")
-                            .addClass("d-none")
-                       }
-                       else{
-                           $("#bookAlert")
-                            .removeClass("d-none alert-danger")
-                            .addClass("alert-success")
-                            .text("This book is Available.");
-
-                            $("#borrowBtn")
-                            .removeClass("d-none")
-                       }
-                   }else{
-                         $("#bookAlert")
-                            .removeClass("alert-success alert-danger")
-                            .addClass("d-none")
-
-                         $("#borrowBtn")
-                           .addClass("d-none")
-                   }
-                    });
-                });
-    </script>    
+            $("#bookSelect").on("change", function() {
+            var bookId = $(this).val();
+            if(!bookId) {
+                $("#bookAlert").addClass("d-none");
+                $("#borrowBtn").addClass("d-none");
+                return;
+            }
+            $.get("/Book/GetBookStatus/" + bookId, function(data) {
+                if(data.isBorrowed){
+                    $("#bookAlert").removeClass("d-none alert-success").addClass("alert-danger").text("This book is already Checked Out!");
+                    $("#borrowBtn").addClass("d-none");
+                } else {
+                    $("#bookAlert").removeClass("d-none alert-danger").addClass("alert-success").text("This book is Available.");
+                    $("#borrowBtn").removeClass("d-none");
+                }
+            });
+        });
+        });
+    </script>
 }

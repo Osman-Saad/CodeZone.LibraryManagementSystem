@@ -3,9 +3,38 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <a asp-action="Index" asp-controller="Author" class="btn btn-primary">Authors</a>
-    <a asp-action="Index" asp-controller="Book" class="btn btn-primary">Books</a>
-    <a asp-action="Index" asp-controller="BorrowingTransactions" class="btn btn-primary">Library</a>
+    <center class=" row d-flex justify-content-around align-content-center">
+        <div class="col-md-4">
+            <div class="card shadow" style="width: 18rem;">
+                <img src="~/imgs/author_img.png" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Authors Management</h5>
+                    <p class="card-text">Manage authors, update their details, associate books, and keep author information organized.</p>
+                    <a asp-action="Index" asp-controller="Author" class="btn btn-primary text-center">Go To Author Management</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 my-4 my-md-0">
+            <div class="card shadow" style="width: 18rem;">
+                <img src="~/imgs/books_img.png" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Books Management</h5>
+                    <p class="card-text">Add, update, and organize books, categorize by genre, and maintain an accurate library inventory.</p>
+                    <a asp-action="Index" asp-controller="Book" class="btn btn-primary text-center">Go To Book Management</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow" style="width: 18rem;">
+                <img src="~/imgs/borrow_return_img.png" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Library Transactions</h5>
+                    <p class="card-text">Easily borrow or return books, track availability, and manage transactions efficiently.</p>
+                    <a asp-action="Index" asp-controller="BorrowingTransactions" class="btn btn-primary text-center">Go To Library Management</a>
+                </div>
+            </div>
+        </div>
+    </center>
 </div>

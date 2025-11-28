@@ -1,11 +1,6 @@
 ﻿using LibraryManagementSystem.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.DAL.Data.Configuration
 {
@@ -17,12 +12,12 @@ namespace LibraryManagementSystem.DAL.Data.Configuration
 
             builder.Property(a => a.FullName)
                    .IsRequired();
-            builder.HasIndex(a=>a.FullName)
+            builder.HasIndex(a => a.FullName)
                    .IsUnique();
 
             builder.Property(a => a.Email)
                      .IsRequired();
-            builder.HasIndex(a=>a.Email)
+            builder.HasIndex(a => a.Email)
                    .IsUnique();
 
             builder.Property(a => a.Bio)

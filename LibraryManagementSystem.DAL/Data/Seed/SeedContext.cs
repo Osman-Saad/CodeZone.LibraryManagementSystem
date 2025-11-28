@@ -1,11 +1,6 @@
 ﻿using LibraryManagementSystem.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.DAL.Data.Seed
 {
@@ -14,7 +9,7 @@ namespace LibraryManagementSystem.DAL.Data.Seed
 
         public static async Task SeedAsync(LibraryDbContext dbContext)
         {
-            
+
 
             if (!dbContext.Authors.Any())
             {
@@ -40,7 +35,7 @@ namespace LibraryManagementSystem.DAL.Data.Seed
                 var transactions = JsonSerializer.Deserialize<List<BorrowTransaction>>(transactionsJson);
                 await dbContext.AddRangeAsync(transactions);
             }
-            
+
             await dbContext.SaveChangesAsync();
         }
     }

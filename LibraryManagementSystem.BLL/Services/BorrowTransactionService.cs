@@ -2,11 +2,6 @@
 using LibraryManagementSystem.DAL.Data;
 using LibraryManagementSystem.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.BLL.Services
 {
@@ -15,15 +10,15 @@ namespace LibraryManagementSystem.BLL.Services
         private readonly LibraryDbContext _dbContext;
         private readonly IBookService _bookService;
 
-        public BorrowTransactionService(LibraryDbContext dbContext,IBookService bookService)
+        public BorrowTransactionService(LibraryDbContext dbContext, IBookService bookService)
         {
             this._dbContext = dbContext;
             this._bookService = bookService;
         }
         public async Task BorrowAsync(Guid bookId)
         {
-            var book = await _bookService.GetByIdAsync(bookId)??throw new Exception("Book Not Found");
-            if(book.IsBorrowed) throw new Exception("Book is already borrowed.");
+            var book = await _bookService.GetByIdAsync(bookId) ?? throw new Exception("Book Not Found");
+            if (book.IsBorrowed) throw new Exception("Book is already borrowed.");
             var transaction = new BorrowTransaction
             {
                 BookId = bookId,
@@ -33,16 +28,16 @@ namespace LibraryManagementSystem.BLL.Services
             book.IsBorrowed = true;
             _bookService.UpdateAsync(book);
             var result = await _dbContext.SaveChangesAsync();
-            if(result<=0)
+            if (result <= 0)
             {
                 throw new Exception("Failed to borrow the book.");
             }
         }
 
-      
+
         public async Task<IEnumerable<Book>> ListTransactionsAsync(string? status, DateOnly? borrowDate, DateOnly? returnDate)
         {
-            IQueryable<Book> query = _dbContext.Books.Include(a=>a.Author);
+            IQueryable<Book> query = _dbContext.Books.Include(a => a.Author);
 
             if (status == "borrowed")
                 query = query.Where(b => b.IsBorrowed);
@@ -54,7 +49,7 @@ namespace LibraryManagementSystem.BLL.Services
                 query = query.Where(b => b.Transactions.Any(t =>
                     (borrowDate.HasValue && t.BorrowedDate == borrowDate.Value)
                     ||
-                    (returnDate.HasValue && t.ReturnedDate== returnDate.Value)
+                    (returnDate.HasValue && t.ReturnedDate == returnDate.Value)
                 ));
             }
 

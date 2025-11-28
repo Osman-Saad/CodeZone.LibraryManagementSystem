@@ -3,11 +3,6 @@ using LibraryManagementSystem.BLL.ProjectionModel;
 using LibraryManagementSystem.DAL.Data;
 using LibraryManagementSystem.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.BLL.Services
 {
@@ -19,36 +14,36 @@ namespace LibraryManagementSystem.BLL.Services
         {
             this._dbContext = dbContext;
         }
-        public async Task AddAsync(Book book)=>
+        public async Task AddAsync(Book book) =>
             await _dbContext.Books.AddAsync(book);
 
-        public async Task<int> CompleteAsync()=>
+        public async Task<int> CompleteAsync() =>
             await _dbContext.SaveChangesAsync();
 
-        public void DeleteAsync(Book book)=>
+        public void DeleteAsync(Book book) =>
             _dbContext.Books.Remove(book);
 
-        public async Task<IEnumerable<Book>> GetAllAsync(int pageNumber)=>
+        public async Task<IEnumerable<Book>> GetAllAsync(int pageNumber) =>
            await _dbContext.Books
             .AsNoTracking()
-            .Skip((pageNumber-1)*5)
+            .Skip((pageNumber - 1) * 5)
             .Take(5)
-            .Include(b=>b.Author)
+            .Include(b => b.Author)
             .ToListAsync();
 
-        public async Task<IEnumerable<Book>> GetAllAsync()=>
+        public async Task<IEnumerable<Book>> GetAllAsync() =>
              await _dbContext.Books
             .AsNoTracking()
             .Include(b => b.Author)
             .ToListAsync();
 
 
-        public async Task<int> GetBookCount()=>
+        public async Task<int> GetBookCount() =>
            await _dbContext.Books.CountAsync();
 
 
-        public async Task<Book?> GetByIdAsync(Guid id)=>
-            await _dbContext.Books.Include(b=>b.Author).FirstOrDefaultAsync(b=>b.Id==id);
+        public async Task<Book?> GetByIdAsync(Guid id) =>
+            await _dbContext.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
 
         public async Task<IEnumerable<BookSelectItem>> GetForSelectAsync() =>
             await _dbContext.Books
@@ -58,7 +53,6 @@ namespace LibraryManagementSystem.BLL.Services
             {
                 Id = b.Id,
                 Title = b.Title,
-                IsBorrowed = b.IsBorrowed
             }).ToListAsync();
 
 

@@ -1,12 +1,11 @@
-﻿using LibraryManagementSystem.DAL.Enums;
-using LibraryManagementSystem.DAL.Models;
+﻿using LibraryManagementSystem.DAL.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagementSystem.PL.Models
 {
     public class BookViewModel
     {
-        public Guid? Id { get; set; } 
+        public Guid? Id { get; set; }
 
         [Required]
         public string Title { get; set; }

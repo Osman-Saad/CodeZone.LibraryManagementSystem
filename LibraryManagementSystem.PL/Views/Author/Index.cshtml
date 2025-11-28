@@ -5,21 +5,21 @@
 }
 <h4 class="text-center">All Authors</h4>
 
-<a asp-action="Create" class="btn btn-info">Create New Author</a>
+<a asp-action="Create" class="btn btn-primary">Create New Author</a>
 @if (Model.Count() > 0)
 {
     <div class="d-flex justify-content-center mt-5">
-        <table class="table">
-            <thead>
+        <table class="table table-bordered">
+            <thead class="table-light">
                 <tr>
-                    <th scope="col">Full Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Website</th>
-                    <th scope="col">Bio</th>
-                    <th scope="col">Books</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Details</th>
-                    <th scope="col">Delete</th>
+                    <th class="text-center" scope="col">Full Name</th>
+                    <th class="text-center" scope="col">Email</th>
+                    <th class="text-center" scope="col">Website</th>
+                    <th class="text-center" scope="col">Bio</th>
+                    <th class="text-center" scope="col">Books</th>
+                    <th class="text-center" scope="col">Edit</th>
+                    <th class="text-center" scope="col">Details</th>
+                    <th class="text-center" scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,13 +31,13 @@
                         <td>@author.Website</td>
                         <td>@author.Bio</td>
                         <td>@string.Join(" , ", author.Books.Select(b=>b.Title).ToList())</td>
-                        <td>
+                        <td class="align-middle text-center">
                             <a asp-action="Edit" class="btn btn-warning" asp-route-id="@author.Id">Edit</a>
                         </td>
-                        <td>
+                        <td class="align-middle text-center">
                             <a asp-action="Details" class="btn btn-primary" asp-route-id = "@author.Id">Details</a>
                         </td>
-                        <td>
+                        <td class="align-middle text-center">
                             <a asp-action="Delete" class="btn btn-danger" asp-route-id="@author.Id">Delete</a>
                         </td>
                     </tr>
